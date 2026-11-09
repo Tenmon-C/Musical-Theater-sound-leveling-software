@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Loudness Matcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #0d0e12;
+            color: #e4e4e7;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+        .header p {
+            font-size: 0.875rem;
+            color: #71717a;
+            margin-top: 4px;
+        }
+        .app-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid #27272a;
+            background: #18181b;
+        }
+        canvas.emscripten {
+            display: block;
+            border: 0 none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Audio Loudness Matcher</h1>
+        <p>In-Browser RMS Gain Matching & Soft Clipping Engine</p>
+    </div>
+
+    <div class="app-card">
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+
+    <script type='text/javascript'>
+      var Module = {
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+          canvas.addEventListener("webglcontextlost", function(e) {
+            alert('WebGL context lost. Please reload the page.');
+            e.preventDefault();
+          }, false);
+          return canvas;
+        })()
+      };
+    </script>
+    {{{ SCRIPT }}}
+</body>
+</html>
