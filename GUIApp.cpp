@@ -161,12 +161,12 @@ void GUIApp::renderUI() {
 
     ImGui::Begin("Main Window", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
-    ImGui::Text("Audio Loudness Matcher (WebAssembly)");
+    ImGui::Text("Audio Loudness Matcher");
     ImGui::Separator();
     ImGui::Spacing();
 
-    ImGui::Text("Target File: %s", m_targetFilePath.empty() ? "[None selected]" : m_targetFilePath.string().c_str());
-    if (ImGui::Button("Browse Target Audio...")) {
+    ImGui::TextWrapped("Target File: %s", m_targetFilePath.empty() ? "[None selected]" : m_targetFilePath.string().c_str());
+    if (ImGui::Button("Browse Target Audio...", ImVec2(-1, 35))) {
 #ifdef __EMSCRIPTEN__
         js_open_file_dialog("/target_audio", "1");
 #endif
@@ -174,8 +174,8 @@ void GUIApp::renderUI() {
 
     ImGui::Spacing();
 
-    ImGui::Text("Reference File: %s", m_refFilePath.empty() ? "[None selected]" : m_refFilePath.string().c_str());
-    if (ImGui::Button("Browse Reference Audio...")) {
+    ImGui::TextWrapped("Reference File: %s", m_refFilePath.empty() ? "[None selected]" : m_refFilePath.string().c_str());
+    if (ImGui::Button("Browse Reference Audio...", ImVec2(-1, 35))) {
 #ifdef __EMSCRIPTEN__
         js_open_file_dialog("/ref_audio", "0");
 #endif
@@ -185,14 +185,15 @@ void GUIApp::renderUI() {
     ImGui::Separator();
     ImGui::Spacing();
 
-    if (ImGui::Button("Match Loudness & Download", ImVec2(240, 40))) {
+    if (ImGui::Button("Match Loudness & Download", ImVec2(-1, 45))) {
         processAudioMatch();
     }
 
     ImGui::Spacing();
-    ImGui::TextColored(ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Status: %s", m_statusMessage.c_str());
+    ImGui::TextWrapped("Status: %s", m_statusMessage.c_str());
 
     if (m_lastResult.success) {
+        ImGui::Spacing();
         ImGui::BulletText("Target RMS: %.2f dBFS", m_lastResult.targetDb);
         ImGui::BulletText("Reference RMS: %.2f dBFS", m_lastResult.refDb);
         ImGui::BulletText("Gain Applied: %+.2f dB", m_lastResult.gainDb);
@@ -200,7 +201,6 @@ void GUIApp::renderUI() {
 
     ImGui::End();
 }
-
 void GUIApp::processAudioMatch() {
     if (m_targetFilePath.empty() || m_refFilePath.empty()) {
         m_statusMessage = "Error: Please select both a Target and Reference file.";
